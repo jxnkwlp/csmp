@@ -1,0 +1,29 @@
+.logo {
+  height: 64px;
+  padding: 16px;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  line-height: 32px;
+}
+.logoMini {
+  height: 64px;
+  padding: 16px;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  line-height: 32px;
+  font-size: 14px;
+}
+.header {
+  background: #fff;
+  padding: 10px 15px;
+  line-height: 44px;
+}
+.content-body {
+  padding: 24px;
+  background: #fff;
+}
+.header-user {
+  float: right;
+}

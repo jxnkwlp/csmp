@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSMP.Agent.Windows", "CSMP.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSMP.Agent.Linux", "CSMP.Agent.Linux\CSMP.Agent.Linux.csproj", "{7F55FD97-4B53-4F89-A335-7FBB9059C342}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMP.Portal.Web", "CSMP.Portal.Web\CSMP.Portal.Web.csproj", "{E34D9256-D5C2-4B73-A835-04177B3BB9AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSMP.Portal.Web", "CSMP.Portal.Web\CSMP.Portal.Web.csproj", "{E34D9256-D5C2-4B73-A835-04177B3BB9AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66A2A063-B5B3-4769-8C0D-B5BD9FEE4F3B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
