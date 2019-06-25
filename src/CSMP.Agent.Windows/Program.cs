@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Threading.Tasks;
 
 namespace CSMP.Agent.Windows
 {
@@ -6,7 +7,11 @@ namespace CSMP.Agent.Windows
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			var task = new AgentTask();
+
+			Task.Run(() => { task.Run(); });
+
+			Console.WriteLine("服务器已启动");
 		}
 	}
 }
