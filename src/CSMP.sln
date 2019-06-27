@@ -12,13 +12,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66A2A063-B5B3-4769-8C0D-B5BD9FEE4F3B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSMP.Core", "CSMP.Core\CSMP.Core.csproj", "{C074D8F8-BDB8-4596-97D3-E13E2BAFEA43}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSMP.Portal.Core", "CSMP.Portal.Core\CSMP.Portal.Core.csproj", "{C45E528C-A38C-4CDC-89E5-AAFE0D2881B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMP.Agent.Core", "CSMP.Agent.Core\CSMP.Agent.Core.csproj", "{73947C9B-CF82-4802-9FB6-10A48A7CCC4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSMP.Agent.Core", "CSMP.Agent.Core\CSMP.Agent.Core.csproj", "{73947C9B-CF82-4802-9FB6-10A48A7CCC4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

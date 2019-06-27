@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CSMP.Portal.Web.Data;
+using CSMP.Portal.Web.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CSMP.Portal.Web
@@ -55,8 +60,31 @@ namespace CSMP.Portal.Web
 				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
 			});
 
-			//services.AddAuthentication()
-			//	.AddJwtBearer();
+			services.AddAuthentication()
+				.AddAgentAuthentication()
+				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+				{
+					options.TokenValidationParameters = new TokenValidationParameters()
+					{
+						ValidateIssuer = false,
+						ValidateAudience = false,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						// ValidAudience = "web",
+						// ValidIssuer = "web",
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("eb86d203-62a9-4e32-ad2d-adc93484a2d6"))
+					};
+				});
+
+			services.AddAuthorization(options =>
+			{
+				options.DefaultPolicy = new AuthorizationPolicyBuilder()
+											.RequireAuthenticatedUser()
+											.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, AgentAuthenticationOptions.AuthenticationScheme)
+											.Build();
+
+				options.AddPolicy("Agent", (b) => { b.RequireRole("Agent"); });
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
