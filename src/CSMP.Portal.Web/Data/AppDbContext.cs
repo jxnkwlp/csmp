@@ -9,6 +9,8 @@ namespace CSMP.Portal.Web.Data
 {
 	public class AppDbContext : DbContext
 	{
+		public DbSet<Account> Accounts { get; set; }
+
 		public DbSet<Server> Servers { get; set; }
 
 

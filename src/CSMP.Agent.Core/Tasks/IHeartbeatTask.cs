@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSMP.Agent
+namespace CSMP.Agent.Tasks
 {
 	public interface IHeartbeatTask
 	{
-		Task BeatAsync();
-
+		Task RunAsync();
 	}
 }

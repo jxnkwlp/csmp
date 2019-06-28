@@ -12,6 +12,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\CSMP.Agent.Core\CSMP.Agent.Core.csproj" />
         <ProjectReference Include="..\CSMP.Core\CSMP.Core.csproj" />
     </ItemGroup>

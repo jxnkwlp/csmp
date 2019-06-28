@@ -4,8 +4,10 @@ using System.Text;
 
 namespace CSMP.Agent.Model
 {
-	public class HeartbeatRequest
+	public class ExecuteResultModel
 	{
+		public Guid CommandId { get; set; }
 
+		public object Data { get; set; }
 	}
 }

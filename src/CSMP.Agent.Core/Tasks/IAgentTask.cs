@@ -1,4 +1,4 @@
-namespace CSMP.Agent
+namespace CSMP.Agent.Tasks
 {
 	public interface IAgentTask
 	{

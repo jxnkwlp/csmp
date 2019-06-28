@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CSMP.Agent
 {
-	public class AgentTask : IAgentTask
+	internal class Consts
 	{
-		public virtual void Run() { }
+
 	}
 }

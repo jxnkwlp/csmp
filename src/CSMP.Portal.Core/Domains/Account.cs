@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSMP.Portal.Domains
 {
@@ -14,6 +15,6 @@ namespace CSMP.Portal.Domains
 		public string PasswordHash { get; set; }
 
 		[MaxLength(128)]
-		public string SecurityStamp { get; set; }
+		public string SecurityStamp { get; set; } = Guid.NewGuid().ToString();
 	}
 }

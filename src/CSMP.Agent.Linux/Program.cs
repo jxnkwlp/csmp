@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 
 namespace CSMP.Agent.Linux
 {
@@ -7,6 +8,8 @@ namespace CSMP.Agent.Linux
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Hello World!");
+
+			Process.Start(new ProcessStartInfo("dotnet", "--info") { RedirectStandardOutput = true });
 		}
 	}
 }
