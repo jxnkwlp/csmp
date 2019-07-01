@@ -1,17 +1,15 @@
 using CSMP.Portal.Domains;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CSMP.Portal.Web.Data
+namespace CSMP.Portal.Data
 {
 	public class AppDbContext : DbContext
 	{
 		public DbSet<Account> Accounts { get; set; }
 
 		public DbSet<Server> Servers { get; set; }
+
+		public DbSet<SecurityToken> Securities { get; set; }
 
 
 		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

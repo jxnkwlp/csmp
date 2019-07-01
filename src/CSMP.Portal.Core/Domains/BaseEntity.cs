@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSMP.Portal.Domains
 {
@@ -16,5 +17,12 @@ namespace CSMP.Portal.Domains
 	public abstract class BaseCreationEntity : BaseEntity
 	{
 		public DateTime CreationTime { get; set; }
+	}
+
+
+	public interface IAgentIdentifier
+	{
+		[MaxLength(32)]
+		string AgentIdentifier { get; set; }
 	}
 }

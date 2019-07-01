@@ -8,8 +8,11 @@ namespace CSMP.Portal.Domains
 	/// <summary>
 	///  Server 
 	/// </summary>
-	public class Server : BaseCreationEntity
+	public class Server : BaseCreationEntity, IAgentIdentifier
 	{
+		[MaxLength(32)]
+		public string AgentIdentifier { get; set; } = Guid.NewGuid().ToString("N");
+
 		/// <summary>
 		///  名称
 		/// </summary>

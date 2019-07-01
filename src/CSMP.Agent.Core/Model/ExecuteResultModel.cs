@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CSMP.Model;
 
 namespace CSMP.Agent.Model
 {
-	public class ExecuteResultModel
-	{
-		public Guid CommandId { get; set; }
+    public class ExecuteResultModel
+    {
+        public CommandDefinition CommandDefinition { get; set; }
 
-		public object Data { get; set; }
-	}
+        public bool Success { get; set; }
+
+        public object ResultData { get; set; }
+    }
 }
