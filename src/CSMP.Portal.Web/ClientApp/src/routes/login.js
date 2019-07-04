@@ -1,3 +1,3 @@
-import { Router, Route } from 'react-router';
+// import { Router, Route } from 'react-router';
 
-<Route path="/login" exact component={Products} />;
+// <Route path="/login" exact component={Products} />;

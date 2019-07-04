@@ -9,8 +9,4 @@ module.exports = {
             '@': require('path').resolve(__dirname, 'src'),
         },
     },
-    devServer: {
-        host: 'http://localhost:15711',
-        port: 9000,
-    },
 };

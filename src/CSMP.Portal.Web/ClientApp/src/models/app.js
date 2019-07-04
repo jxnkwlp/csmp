@@ -1,4 +1,4 @@
-import { getAccessToken, setAccessToken } from '@/utils/util';
+import { getAccessToken, setAccessToken } from '@/utils';
 
 export default {
     namespace: 'app',

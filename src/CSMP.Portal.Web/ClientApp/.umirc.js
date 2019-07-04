@@ -8,7 +8,7 @@ export default {
             {
                 title: 'Portal Web',
                 antd: true,
-                dva: true,
+                dva: { immer: true },
                 dynamicImport: false,
                 dll: false,
 
@@ -24,4 +24,8 @@ export default {
             },
         ],
     ],
+    devServer: {
+        host: 'http://localhost:15711',
+        port: 9000,
+    },
 };
