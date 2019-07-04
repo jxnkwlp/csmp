@@ -4,10 +4,10 @@ using System.Text;
 
 namespace CSMP.Agent.Collecter
 {
-	public interface ICollecter<TReturn> where TReturn : CollectionResult
-	{
-		string Name { get; }
+    public interface ICollecter<TReturn> where TReturn : CollectionResult
+    {
+        string Name { get; }
 
-		TReturn Collect();
-	}
+        TReturn GetSnapshot();
+    }
 }

@@ -1,4 +1,5 @@
 using CSMP.Portal.Data;
+using CSMP.Portal.Web.Jobs;
 using CSMP.Portal.Web.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +48,8 @@ namespace CSMP.Portal.Web
                 })
                 .AddUnitOfWork<AppDbContext>();
 
+            services.AddMemoryCache();
+
             services.AddSpaStaticFiles(options =>
             {
                 options.RootPath = "ClientApp/dist";
@@ -82,6 +85,9 @@ namespace CSMP.Portal.Web
 
                 options.AddPolicy("Agent", (b) => { b.RequireRole("Agent"); });
             });
+
+
+            //services.AddHostedService<SnapshotDataQueueHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

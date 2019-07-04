@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace CSMP.Portal.Web.Models
 {
-	public class HeartbeatRequesetModel
-	{
-	}
+    public class HeartbeatRequesetModel
+    {
+        public Dictionary<string, object> Snapshots { get; set; }
+    }
 }

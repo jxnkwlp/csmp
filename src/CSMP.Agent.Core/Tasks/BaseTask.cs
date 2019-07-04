@@ -15,5 +15,10 @@ namespace CSMP.Agent.Tasks
         }
 
         public abstract Task RunAsync();
+
+        public virtual void Dispose()
+        {
+        }
+
     }
 }

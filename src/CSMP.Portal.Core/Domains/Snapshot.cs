@@ -1,11 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace CSMP.Portal.Domains
 {
-    public class HeartbeatCollect : BaseCreationEntity, IAgentIdentifier
+    /// <summary>
+    ///  收集的数据
+    /// </summary>
+    public class Snapshot : IEntity<long>, IAgentIdentifier
     {
+        public long Id { get; set; }
+
         public string AgentIdentifier { get; set; }
 
         public string Name { get; set; }

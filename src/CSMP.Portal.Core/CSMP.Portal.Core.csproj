@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -8,6 +8,10 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
         <PackageReference Include="Passingwind.UnitOfWork" Version="0.1.0" /> 
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CSMP.Core\CSMP.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CSMP.Agent.Logging;
+using CSMP.Agent.Queue;
 
 namespace CSMP.Agent.Tasks
 {
@@ -17,28 +18,18 @@ namespace CSMP.Agent.Tasks
     {
         const string urlPath = "event/heartbeat";
 
-        static HttpClient _httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) };
-
-        private readonly Timer _timer;
+        private static readonly HttpClient _httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) };
 
         private bool canRun = false;
+        private readonly IMonitoringQueue _monitoringQueue;
 
-        public HeartbeatTask(AgentConfiguration configuration, ILogger logger) : base(configuration, logger)
+        public HeartbeatTask(AgentConfiguration configuration, ILogger logger, IMonitoringQueue monitoringQueue) : base(configuration, logger)
         {
-            _timer = new Timer(Callback, null, 0, 5 * 1000); // 5s
+            _monitoringQueue = monitoringQueue;
         }
 
-        public override Task RunAsync()
+        public override async Task RunAsync()
         {
-            canRun = true;
-            return Task.CompletedTask;
-        }
-
-        private void Callback(object state)
-        {
-            if (!canRun)
-                return;
-
             if (!configuration.Valid())
             {
                 logger.Warn("配置不正确！请检查");
@@ -49,15 +40,36 @@ namespace CSMP.Agent.Tasks
             if (!url.EndsWith("/")) url += "/";
             url += urlPath;
 
-            try
+            while (!_disposed)
             {
-                // post event data to server ,the request data type is 'HeartbeatRequest'
-            }
-            catch (Exception)
-            {
+                try
+                {
+                    var snapshotList = _monitoringQueue.PopAsync();
 
-                throw;
+                    var data = new { snapshots = snapshotList };
+
+                    var response = await _httpClient.PostAsync($"{url}?apitoken={configuration.Token}&identifier={configuration.Identifier}", new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(data), Encoding.UTF8));
+
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "发送心跳数据失败");
+                }
+
+                Thread.Sleep(5000);
             }
+
         }
+
+        private bool _disposed = false;
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            if (!_disposed)
+                _disposed = true;
+        }
+
     }
 }

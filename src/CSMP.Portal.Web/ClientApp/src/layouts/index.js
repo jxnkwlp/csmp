@@ -74,6 +74,7 @@ function BasicLayout(props) {
                     >
                         <Menu.Item key="user">用户</Menu.Item>
                         <Menu.Item key="logs">操作日志</Menu.Item>
+                        <Menu.Item key="token">Token</Menu.Item>
                     </SubMenu>
                 </Menu>
             </Sider>

@@ -8,13 +8,13 @@ namespace CSMP.Agent.Tasks
 {
     public static class AgentTaskManager
     {
-        public static void Start()
+        public static async Task StartAsync()
         {
             var taskList = DependencyService.ResolveAll<ITask>();
 
             foreach (var task in taskList)
             {
-                Task.Run(() => task.RunAsync());
+                await task.RunAsync();
             }
         }
     }

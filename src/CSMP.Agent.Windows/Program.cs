@@ -19,7 +19,7 @@ namespace CSMP.Agent.Windows
         {
             var configuration = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
-                .AddCommandLine(args)
+                //.AddCommandLine(args)
                 .AddJsonFile("appsettings.json", true, false)
                 .Build();
 
@@ -43,11 +43,16 @@ namespace CSMP.Agent.Windows
             configuration.Bind(agentConfig);
 
             DependencyService.Register(() => agentConfig);
-            DependencyService.Register<ILogger, NullLogger>();
+            //DependencyService.Register<ILogger, NullLogger>();
             DependencyService.RegisterTypes<ITask>();
-            DependencyService.RegisterTypes(typeof(ICollecter<>));
+            // DependencyService.RegisterTypes(typeof(ICollecter<>));
+            DependencyService.RegisterTypes(typeof(IMemoryUsageCollecter));
+            DependencyService.RegisterTypes(typeof(IDiskStorageUsageCollecter));
+            DependencyService.RegisterTypes<ICpuUsageCollecter>();
 
-            AgentTaskManager.Start();
+            DependencyService.Resolve<ILogger>();
+
+            AgentTaskManager.StartAsync().GetAwaiter().GetResult();
 
             Console.WriteLine("Agent服务已启动");
         }

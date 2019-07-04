@@ -1,3 +1,4 @@
+using CSMP.Model;
 using CSMP.Portal.Domains;
 using System.Collections.Generic;
 using System.Threading.Tasks;

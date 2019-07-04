@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CSMP.Agent
 {
-	internal class Consts
-	{
-
-	}
+    internal class Consts
+    {
+        public const string Version = "0.1.0";
+    }
 }

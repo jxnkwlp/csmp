@@ -1,3 +1,5 @@
+using CSMP.Portal.Domains;
+using CSMP.Portal.Queue;
 using CSMP.Portal.Services;
 using CSMP.Portal.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,22 +12,44 @@ namespace CSMP.Portal.Web.Controllers
     {
         private readonly IServerService _serverService;
         private readonly ICommandService _commandService;
+        private readonly ISnapshotDataQueue _snapshotDataQueue;
 
-        public EventController(IServerService serverService, ICommandService commandService)
+        public EventController(IServerService serverService, ICommandService commandService, ISnapshotDataQueue snapshotDataQueue)
         {
             _serverService = serverService;
             _commandService = commandService;
+            _snapshotDataQueue = snapshotDataQueue;
         }
 
         /// <summary>
         ///  心跳
         /// </summary> 
         [HttpPost("[action]")]
-        public IActionResult Heartbeat([FromBody] HeartbeatRequesetModel model)
+        public async Task<IActionResult> HeartbeatAsync([FromQuery] string identifier, [FromBody] HeartbeatRequesetModel model)
         {
-            // TODO
+            if (model.Snapshots != null)
+            {
+                foreach (var item in model.Snapshots)
+                {
+                    if (item.Value == null)
+                        continue;
 
-            return Ok();
+                    var data = new Snapshot()
+                    {
+                        AgentIdentifier = identifier,
+                        Name = item.Key.ToString().ToLower(),
+                        Data = Newtonsoft.Json.JsonConvert.SerializeObject(item.Value),
+                    };
+
+                    await _snapshotDataQueue.PushAsync(data);
+                }
+
+                return Ok();
+            }
+            else
+            {
+                return Accepted();
+            }
         }
 
         /// <summary>

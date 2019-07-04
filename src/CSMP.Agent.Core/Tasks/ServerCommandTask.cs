@@ -33,7 +33,7 @@ namespace CSMP.Agent.Tasks
                 return;
             }
 
-            while (true)
+            while (!_disposed)
             {
 
                 string url = configuration.ServerUrl;
@@ -72,6 +72,7 @@ namespace CSMP.Agent.Tasks
                 // waiting and continue
                 Thread.Sleep(100);
             }
+             
         }
 
         private async Task ResponseExecutedResultAsync(ExecuteResultModel model)
@@ -104,6 +105,16 @@ namespace CSMP.Agent.Tasks
                         throw;
                     }
                 });
+        }
+
+
+        private bool _disposed = false;
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            if (!_disposed)
+                _disposed = true;
         }
 
     }
