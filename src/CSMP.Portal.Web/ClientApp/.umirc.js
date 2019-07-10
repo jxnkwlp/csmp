@@ -24,8 +24,10 @@ export default {
             },
         ],
     ],
+
     devServer: {
-        host: 'http://localhost:15711',
-        port: 9000,
+        proxy: {
+            '/api': 'https://localhost:44334/',
+        },
     },
 };

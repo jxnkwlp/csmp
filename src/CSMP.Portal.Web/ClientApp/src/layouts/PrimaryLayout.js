@@ -1,7 +1,8 @@
-import { PureComponent, Fragment } from 'react';
-
 import styles from './index.less';
 import router from 'umi/router';
+import { getAccessToken } from '@/utils';
+
+import { PureComponent, Fragment } from 'react';
 
 import AppHeader from './header';
 import AppSilder from './silder';
@@ -12,10 +13,17 @@ import { connect } from 'dva';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
+@connect(({ app, loading }) => ({ app, loading }))
 class PrimaryLayout extends PureComponent {
-    componentDidMount() {}
+    componentDidMount() {
+        if (!getAccessToken()) {
+            router.push('/login');
+        }
+    }
 
     render() {
+        const { app, location, dispatch, children } = this.props;
+
         const siderProps = {
             collapsed: false,
         };
@@ -23,6 +31,9 @@ class PrimaryLayout extends PureComponent {
         const headerProps = {
             login: {
                 userName: 'youname',
+            },
+            onLogout: () => {
+                dispatch({ type: 'app/handleClearToken' });
             },
         };
 

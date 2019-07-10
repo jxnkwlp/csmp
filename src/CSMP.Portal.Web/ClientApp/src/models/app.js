@@ -1,4 +1,5 @@
 import { getAccessToken, setAccessToken } from '@/utils';
+import router from 'umi/router';
 
 export default {
     namespace: 'app',
@@ -11,7 +12,18 @@ export default {
         apiToken: getAccessToken(),
     },
     subscriptions: {},
-    effects: {},
+    effects: {
+        *handleClearToken(_, { call, put }) {
+            setAccessToken('');
+            yield router.push('/login');
+        },
+
+        *handleSaveToken({ payload: value }, { call, put }) {
+            // console.log(token);
+            setAccessToken(value.token);
+            yield router.push('/home');
+        },
+    },
     reducers: {
         changeCollapsed(
             state = {
@@ -21,14 +33,6 @@ export default {
             { payload },
         ) {
             return { ...state, collapsed: payload };
-        },
-
-        handleSaveToken(state, { token }) {
-            setAccessToken(token);
-        },
-
-        handleClearToken(state) {
-            setAccessToken('');
         },
     },
 };

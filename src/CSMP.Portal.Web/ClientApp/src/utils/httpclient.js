@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import { getAccessToken } from './index';
+import config from '@/config/';
 
 const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.prod;
 

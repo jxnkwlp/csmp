@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CSMP.Portal.Domains;
 using CSMP.Portal.Services;
 using CSMP.Portal.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -51,15 +52,31 @@ namespace CSMP.Portal.Web.Controllers
             return tokenHandler.WriteToken(token);
         }
 
+        [AllowAnonymous]
         [HttpPost("[action]")]
-        public IActionResult Token([FromBody] LoginModel model)
+        public async Task<IActionResult> Token([FromBody] LoginModel model)
         {
+            var account = await _accountService.GetByUserNameAsync(model.UserName);
 
-            // TODO 
-            return Ok();
+            if (account == null)
+                return BadRequest();
+
+            var result = await _accountService.ValidPasswordAsync(account, model.Password);
+
+            if (result)
+                return BadRequest();
+
+            var token = new
+            {
+                displayName = account.DisplayName,
+                userName = account.UserName,
+                token = CreateJwtToken(account)
+            };
+
+            return Ok(token);
         }
 
-
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> AgentRegister([FromQuery] string token)
         {
@@ -69,6 +86,11 @@ namespace CSMP.Portal.Web.Controllers
             }
 
             var result = await _securityTokenService.ValidTokenAsync(token);
+
+            if (!result)
+            {
+                return Unauthorized();
+            }
 
             var agent = await _agentService.GetOrCreateAsync(Guid.NewGuid().ToString("N"));
 

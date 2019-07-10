@@ -13,13 +13,15 @@ class Header extends PureComponent {
         console.log(props);
     }
 
+    handleLogout = () => {
+        var { onLogout } = this.props;
+        if (onLogout) onLogout();
+    };
+
     render() {
         const { login } = this.props;
 
         const handleChangePassword = () => {
-            message.info('待实现');
-        };
-        const handleLogout = () => {
             message.info('待实现');
         };
 
@@ -30,7 +32,7 @@ class Header extends PureComponent {
                     修改密码
                 </Menu.Item>
                 <Menu.Divider />
-                <Menu.Item onClick={() => handleLogout()}>
+                <Menu.Item onClick={() => this.handleLogout()}>
                     <Icon type="logout" />
                     退出
                 </Menu.Item>
