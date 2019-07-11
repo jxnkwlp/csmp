@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-        <RootNamespace>CSMP.Portal</RootNamespace>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<RootNamespace>CSMP.Portal</RootNamespace>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
-        <PackageReference Include="Passingwind.UnitOfWork" Version="0.1.0" /> 
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
+		<PackageReference Include="Passingwind.UnitOfWork" Version="0.1.0" />
+		<PackageReference Include="Passingwind.PagedList" Version="0.1.0" />
+	</ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\CSMP.Core\CSMP.Core.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CSMP.Core\CSMP.Core.csproj" />
+	</ItemGroup>
 
 </Project>

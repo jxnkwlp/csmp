@@ -22,6 +22,7 @@ class PrimaryLayout extends PureComponent {
     }
 
     render() {
+        console.log(this.props);
         const { app, location, dispatch, children } = this.props;
 
         const siderProps = {
@@ -29,9 +30,8 @@ class PrimaryLayout extends PureComponent {
         };
 
         const headerProps = {
-            login: {
-                userName: 'youname',
-            },
+            login: this.props.app.login,
+
             onLogout: () => {
                 dispatch({ type: 'app/handleClearToken' });
             },

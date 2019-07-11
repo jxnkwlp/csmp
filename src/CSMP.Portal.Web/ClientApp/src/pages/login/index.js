@@ -19,8 +19,6 @@ class Login extends PureComponent {
                 return;
             }
 
-            // console.log(this);
-            // console.log(dispatch);
             dispatch({ type: 'login/login', payload: values });
         });
         return;

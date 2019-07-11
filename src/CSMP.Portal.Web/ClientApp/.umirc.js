@@ -26,8 +26,8 @@ export default {
     ],
 
     devServer: {
-        proxy: {
-            '/api': 'https://localhost:44334/',
-        },
+        // proxy: {
+        //     '/api': 'https://localhost:44334/',
+        // },
     },
 };

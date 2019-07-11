@@ -1,5 +1,7 @@
 import { getAccessToken, setAccessToken } from '@/utils';
 import * as api from '@/api/data';
+import { getToken } from './service';
+import { message } from 'antd';
 
 export default {
     namespace: 'login',
@@ -11,24 +13,22 @@ export default {
         *login({ payload: forms }, { put, call }) {
             console.log(forms);
 
-            // TODO
-            // yield api
-            //     .post('api/auth/login', forms)
-            //     .then(result => {
-            //         if (result.data) {
-            //             put({
-            //                 type: 'app/handleSaveToken',
-            //                 payload: { token: '212121' },
-            //             });
-            //         } else {
-            //         }
-            //     })
-            //     .catch(err => {});
-
-            yield put({
-                type: 'app/handleSaveToken',
-                payload: { token: '123465789' },
-            });
+            try {
+                var response = yield call(getToken, forms);
+                // console.log(response);
+                var data = response.data;
+                yield put({
+                    type: 'app/handleSaveToken',
+                    payload: { token: data.token },
+                });
+                yield put({
+                    type: 'app/saveLoginedInfo',
+                    payload: data,
+                });
+            } catch (error) {
+                console.log(error);
+                message.error('登录失败！用户名或密码错误');
+            }
         },
     },
     reducers: {},

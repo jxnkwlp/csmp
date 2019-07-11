@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSMP.Portal.Web.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	[Authorize]
-	public abstract class AppControllerBase : ControllerBase
-	{
-	}
+    /// <summary>
+    ///  the base api controller 
+    /// </summary>
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public abstract class AppControllerBase : ControllerBase
+    {
+    }
 }

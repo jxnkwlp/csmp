@@ -44,7 +44,7 @@ class Header extends PureComponent {
                 <div className={styles['header-user']}>
                     <Dropdown overlay={userMenu}>
                         <a className="ant-dropdown-link" href="javascript:;">
-                            <Avatar icon="user" size="small" /> {login.userName}{' '}
+                            <Avatar icon="user" size="small" /> {login.displayName}{' '}
                             <Icon type="down" />
                         </a>
                     </Dropdown>

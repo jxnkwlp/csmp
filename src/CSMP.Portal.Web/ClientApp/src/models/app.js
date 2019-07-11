@@ -1,4 +1,4 @@
-import { getAccessToken, setAccessToken } from '@/utils';
+import { getAccessToken, setAccessToken, saveStore, getStore } from '@/utils';
 import router from 'umi/router';
 
 export default {
@@ -6,8 +6,9 @@ export default {
     state: {
         notices: [],
         collapsed: false,
-        login: {
-            userName: 'youname',
+        login: getStore('login') || {
+            userName: '',
+            displayName: '',
         },
         apiToken: getAccessToken(),
     },
@@ -23,6 +24,11 @@ export default {
             setAccessToken(value.token);
             yield router.push('/home');
         },
+
+        *saveLoginedInfo({ payload: value }, { call, put }) {
+            saveStore('login', value);
+            yield put({ type: 'setLogin', payload: { user: value } });
+        },
     },
     reducers: {
         changeCollapsed(
@@ -33,6 +39,10 @@ export default {
             { payload },
         ) {
             return { ...state, collapsed: payload };
+        },
+
+        setLogin(state, { payload }) {
+            return { ...state, login: payload.user };
         },
     },
 };
