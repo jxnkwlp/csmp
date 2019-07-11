@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -96,6 +97,7 @@ namespace CSMP.Portal.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
@@ -120,6 +122,12 @@ namespace CSMP.Portal.Web
             app.UseSpa(config =>
             {
                 config.Options.SourcePath = "ClientApp";
+#if DEBUG
+                if (env.IsDevelopment())
+                {
+                    config.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+                }
+#endif
             });
         }
     }
