@@ -1,24 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSMP.Portal.Services
 {
-	public interface IService<T> where T : class
-	{
-		Task CreateAsync(T entity);
+    public interface IService<T> where T : class
+    {
+        Task CreateAsync(T entity, bool save = true);
 
-		Task UpdateAsync(T entity);
+        Task UpdateAsync(T entity, bool save = true);
 
-		Task DeleteAsync(T entity);
+        Task DeleteAsync(T entity, bool save = true);
 
-		Task DeleteAsync(int id);
+        Task DeleteAsync(int id, bool save = true);
 
-		Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(int id);
 
-		IQueryable<T> GetAll();
+        IQueryable<T> GetAll();
 
-	}
+    }
 }

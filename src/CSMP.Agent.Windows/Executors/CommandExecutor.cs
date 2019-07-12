@@ -11,7 +11,9 @@ namespace CSMP.Agent.Windows.Executors
     {
         public ExecuteResultModel ExecuteAsync(CommandDefinition definition)
         {
-            throw new NotImplementedException();
+            // TODO 
+
+            return new ExecuteResultModel();
         }
     }
 }

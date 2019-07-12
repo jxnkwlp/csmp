@@ -1,4 +1,6 @@
 using CSMP.Portal.Data;
+using CSMP.Portal.Queue;
+using CSMP.Portal.Services;
 using CSMP.Portal.Web.Jobs;
 using CSMP.Portal.Web.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,9 +41,8 @@ namespace CSMP.Portal.Web
             services
                 .AddDbContext<AppDbContext>(options =>
                 {
-                    // options.UseSqlServer(_configuration.GetConnectionString("Default"), config => config.CommandTimeout(30).EnableRetryOnFailure(5));
+                    options.UseSqlServer(_configuration.GetConnectionString("server"), config => config.CommandTimeout(30).EnableRetryOnFailure(5));
 
-                    options.UseInMemoryDatabase("csmp");
 #if DEBUG
                     options.EnableDetailedErrors(true);
                     options.EnableSensitiveDataLogging(true);
@@ -87,8 +88,21 @@ namespace CSMP.Portal.Web
                 options.AddPolicy("Agent", (b) => { b.RequireRole("Agent"); });
             });
 
+            // services
+            services.AddSingleton<ISnapshotDataQueue, SnapshotDataQueue>();
+            services.AddSingleton<ICommandQueue, DefaultCommandQueue>();
+            services.AddSingleton<ICacheService, DefaultMemoryCacheService>();
+            services.AddSingleton<ISnapshotDataQueue, SnapshotDataQueue>();
 
-            //services.AddHostedService<SnapshotDataQueueHostedService>();
+            services.AddScoped<ISecurityTokenService, SecurityTokenService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAgentService, AgentService>();
+            services.AddScoped<IServerService, ServerService>();
+            services.AddScoped<ISnapshotDataQueueManager, SnapshotDataQueueManager>();
+
+            services.AddScoped<ISnapshotDataStore, DefaultSnapshotDataStore>();
+
+            services.AddHostedService<SnapshotDataQueueHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,7 +111,7 @@ namespace CSMP.Portal.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -125,7 +139,9 @@ namespace CSMP.Portal.Web
 #if DEBUG
                 if (env.IsDevelopment())
                 {
+                    // you must run the spa app before start vs!
                     config.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+
                 }
 #endif
             });

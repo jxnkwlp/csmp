@@ -25,7 +25,7 @@ namespace CSMP.Portal.Web.Controllers
         ///  心跳
         /// </summary> 
         [HttpPost("[action]")]
-        public async Task<IActionResult> HeartbeatAsync([FromQuery] string identifier, [FromBody] HeartbeatRequesetModel model)
+        public async Task<IActionResult> Heartbeat([FromQuery] string identifier, [FromBody] HeartbeatRequesetModel model)
         {
             if (model.Snapshots != null)
             {
@@ -83,7 +83,7 @@ namespace CSMP.Portal.Web.Controllers
                 return Accepted();
             }
 
-            await _commandService.UpdateStatusAsync(identifier, model.CommandId, model.Status);
+            await _commandService.UpdateAsync(identifier, model.CommandId, model.Status, model.Result);
 
             return Ok();
         }

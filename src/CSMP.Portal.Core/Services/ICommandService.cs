@@ -10,10 +10,10 @@ namespace CSMP.Portal.Services
     /// </summary>
     public interface ICommandService
     {
-        Task<IList<CommandDefinition>> PullAsync(string identifier);
+        Task<List<CommandDefinition>> PullAsync(string identifier);
 
-        Task PushAsync(string identifier, string command);
+        Task PushAsync(string identifier, CommandDefinition command);
 
-        Task UpdateStatusAsync(string identifier, string commandId, CommandStatus status);
+        Task UpdateAsync(string identifier, string commandId, CommandStatus status, string result);
     }
 }

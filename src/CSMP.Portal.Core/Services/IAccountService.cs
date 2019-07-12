@@ -10,7 +10,7 @@ namespace CSMP.Portal.Services
     {
         Task<Account> GetByUserNameAsync(string userName);
 
-        Task<bool> ValidPasswordAsync(Account account, string password);
+        Task<bool> VerifyHashedPasswordAsync(Account account, string password);
 
         Task HashPasswordAsync(Account account, string password);
     }

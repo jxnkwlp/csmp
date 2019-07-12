@@ -21,7 +21,7 @@ namespace CSMP.Portal.Domains
     /// </summary>
     public abstract class BaseCreationEntity : BaseEntity
     {
-        public DateTime CreationTime { get; set; }
+        public DateTime CreationTime { get; set; } = DateTime.Now;
     }
 
 

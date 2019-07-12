@@ -15,4 +15,10 @@
 		<ProjectReference Include="..\CSMP.Core\CSMP.Core.csproj" />
 	</ItemGroup>
 
+	<!--<ItemGroup>
+	  <Reference Include="Passingwind.UnitOfWork">
+	    <HintPath>..\..\..\Passingwind.libs\Passingwind.UnitOfWork\UnitOfWork\bin\Debug\netstandard2.0\Passingwind.UnitOfWork.dll</HintPath>
+	  </Reference>
+	</ItemGroup>-->
+
 </Project>

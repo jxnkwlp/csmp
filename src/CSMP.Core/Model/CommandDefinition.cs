@@ -6,7 +6,7 @@ namespace CSMP.Model
 {
     public class CommandDefinition
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Command { get; set; }
 

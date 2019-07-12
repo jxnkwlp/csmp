@@ -43,9 +43,7 @@ namespace CSMP.Agent.Windows
             configuration.Bind(agentConfig);
 
             DependencyService.Register(() => agentConfig);
-            //DependencyService.Register<ILogger, NullLogger>();
             DependencyService.RegisterTypes<ITask>();
-            // DependencyService.RegisterTypes(typeof(ICollecter<>));
             DependencyService.RegisterTypes(typeof(IMemoryUsageCollecter));
             DependencyService.RegisterTypes(typeof(IDiskStorageUsageCollecter));
             DependencyService.RegisterTypes<ICpuUsageCollecter>();

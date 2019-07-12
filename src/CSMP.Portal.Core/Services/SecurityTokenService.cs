@@ -28,15 +28,17 @@ namespace CSMP.Portal.Services
                 return entity.Expired.HasValue ? entity.Expired > DateTime.Now : true;
         }
 
-        public override async Task DeleteAsync(int id)
+        public override async Task DeleteAsync(int id, bool save = true)
         {
-            await base.DeleteAsync(id);
+            await base.DeleteAsync(id, save);
+
             await CacheService.RemoveGroupAsync(CacheKeyGroup);
         }
 
-        public override async Task DeleteAsync(SecurityToken entity)
+        public override async Task DeleteAsync(SecurityToken entity, bool save = true)
         {
-            await base.DeleteAsync(entity);
+            await base.DeleteAsync(entity, save);
+
             await CacheService.RemoveGroupAsync(CacheKeyGroup);
         }
     }

@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 
 namespace CSMP.Agent.Queue
 {
-    /// <summary>
-    ///  
+    /// <summary> 
     /// </summary>
     public interface IMonitoringQueue
     {
-        Task<IList<CollectionResult>> PopAsync();
+        Task<List<CollectionResult>> PopAsync();
 
         Task PushAsync(IList<CollectionResult> result);
     }

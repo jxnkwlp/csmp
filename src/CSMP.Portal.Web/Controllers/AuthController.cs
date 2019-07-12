@@ -61,9 +61,9 @@ namespace CSMP.Portal.Web.Controllers
             if (account == null)
                 return BadRequest();
 
-            var result = await _accountService.ValidPasswordAsync(account, model.Password);
+            var result = await _accountService.VerifyHashedPasswordAsync(account, model.Password);
 
-            if (result)
+            if (!result)
                 return BadRequest();
 
             var token = new

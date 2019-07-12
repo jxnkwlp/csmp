@@ -20,7 +20,7 @@
         <ProjectReference Include="..\CSMP.Core\CSMP.Core.csproj" />
         <ProjectReference Include="..\CSMP.Portal.Core\CSMP.Portal.Core.csproj" />
     </ItemGroup>
-
+ 
     <ItemGroup>
       <Folder Include="Data\" />
     </ItemGroup>

@@ -8,14 +8,42 @@ namespace CSMP.Agent.Queue
 {
     public class MemoryMonitoringQueue : IMonitoringQueue
     {
-        public Task<IList<CollectionResult>> PopAsync()
+        protected static Queue<CollectionResult> _queue = new Queue<CollectionResult>();
+
+        public MemoryMonitoringQueue()
         {
-            throw new NotImplementedException();
+        }
+
+        public Task<List<CollectionResult>> PopAsync()
+        {
+            var result = new List<CollectionResult>();
+
+            while (true)
+            {
+                if (_queue.TryDequeue(out var item))
+                {
+                    result.Add(item);
+                }
+                else
+                    break;
+            }
+
+            return Task.FromResult(result);
         }
 
         public Task PushAsync(IList<CollectionResult> result)
         {
-            throw new NotImplementedException();
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            foreach (var item in result)
+            {
+                _queue.Enqueue(item);
+            }
+
+            return Task.CompletedTask;
         }
     }
 }
