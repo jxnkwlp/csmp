@@ -8,7 +8,7 @@ export default {
             {
                 title: 'Portal Web',
                 antd: true,
-                dva: true,
+                dva: { immer: true },
                 dynamicImport: false,
                 dll: false,
 
@@ -24,4 +24,10 @@ export default {
             },
         ],
     ],
+
+    devServer: {
+        // proxy: {
+        //     '/api': 'https://localhost:44334/',
+        // },
+    },
 };

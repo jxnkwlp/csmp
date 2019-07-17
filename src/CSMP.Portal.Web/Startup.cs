@@ -1,123 +1,150 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSMP.Portal.Web.Data;
+using CSMP.Portal.Data;
+using CSMP.Portal.Queue;
+using CSMP.Portal.Services;
+using CSMP.Portal.Web.Jobs;
 using CSMP.Portal.Web.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Text;
 
 namespace CSMP.Portal.Web
 {
-	public class Startup
-	{
-		private readonly IConfiguration _configuration;
+    public class Startup
+    {
+        private readonly IConfiguration _configuration;
 
-		public Startup(IConfiguration configuration)
-		{
-			_configuration = configuration;
-		}
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services
-				.AddMvc()
-				.AddJsonOptions(options =>
-				{
-					options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
-				})
-				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-			services.AddDbContext<AppDbContext>(options =>
-			{
-				options.UseSqlServer(_configuration.GetConnectionString("Default"));
+            services
+                .AddDbContext<AppDbContext>(options =>
+                {
+                    options.UseSqlServer(_configuration.GetConnectionString("server"), config => config.CommandTimeout(30).EnableRetryOnFailure(5));
+
 #if DEBUG
-				options.EnableDetailedErrors(true);
-				options.EnableSensitiveDataLogging(true);
+                    options.EnableDetailedErrors(true);
+                    options.EnableSensitiveDataLogging(true);
 #endif
-			});
+                })
+                .AddUnitOfWork<AppDbContext>();
 
-			services.AddSpaStaticFiles(options =>
-			{
-				options.RootPath = "ClientApp/dist";
-			});
+            services.AddMemoryCache();
 
-			services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-			});
+            services.AddSpaStaticFiles(options =>
+            {
+                options.RootPath = "ClientApp/dist";
+            });
 
-			services.AddAuthentication()
-				.AddAgentAuthentication()
-				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-				{
-					options.TokenValidationParameters = new TokenValidationParameters()
-					{
-						ValidateIssuer = false,
-						ValidateAudience = false,
-						ValidateLifetime = true,
-						ValidateIssuerSigningKey = true,
-						// ValidAudience = "web",
-						// ValidIssuer = "web",
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("eb86d203-62a9-4e32-ad2d-adc93484a2d6"))
-					};
-				});
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
 
-			services.AddAuthorization(options =>
-			{
-				options.DefaultPolicy = new AuthorizationPolicyBuilder()
-											.RequireAuthenticatedUser()
-											.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, AgentAuthenticationOptions.AuthenticationScheme)
-											.Build();
+            services.AddAuthentication()
+                .AddAgentAuthentication()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        // ValidAudience = "web",
+                        // ValidIssuer = "web",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("eb86d203-62a9-4e32-ad2d-adc93484a2d6"))
+                    };
+                });
 
-				options.AddPolicy("Agent", (b) => { b.RequireRole("Agent"); });
-			});
-		}
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                                            .RequireAuthenticatedUser()
+                                            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, AgentAuthenticationOptions.AuthenticationScheme)
+                                            .Build();
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
+                options.AddPolicy("Agent", (b) => { b.RequireRole("Agent"); });
+            });
 
-			app.UseHttpsRedirection();
+            // services
+            services.AddSingleton<ISnapshotDataQueue, SnapshotDataQueue>();
+            services.AddSingleton<ICommandQueue, DefaultCommandQueue>();
+            services.AddSingleton<ICacheService, DefaultMemoryCacheService>();
+            services.AddSingleton<ISnapshotDataQueue, SnapshotDataQueue>();
 
-			app.UseStaticFiles();
-			app.UseSpaStaticFiles();
+            services.AddScoped<ISecurityTokenService, SecurityTokenService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAgentService, AgentService>();
+            services.AddScoped<IServerService, ServerService>();
+            services.AddScoped<ISnapshotDataQueueManager, SnapshotDataQueueManager>();
 
-			app.UseMvcWithDefaultRoute();
+            services.AddScoped<ISnapshotDataStore, DefaultSnapshotDataStore>();
 
-			app.UseSwagger();
+            services.AddHostedService<SnapshotDataQueueHostedService>();
+        }
 
-			app.UseSwaggerUI(c =>
-			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1");
-			});
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-			app.UseSpa(config =>
-			{
-				config.Options.SourcePath = "ClientApp";
-			});
-		}
-	}
+            app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1");
+            });
+
+            app.UseSpa(config =>
+            {
+                config.Options.SourcePath = "ClientApp";
+#if DEBUG
+                if (env.IsDevelopment())
+                {
+                    // you must run the spa app before start vs!
+                    config.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+
+                }
+#endif
+            });
+        }
+    }
 }

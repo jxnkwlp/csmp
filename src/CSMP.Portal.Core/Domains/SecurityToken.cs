@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSMP.Portal.Domains
 {
@@ -9,5 +10,7 @@ namespace CSMP.Portal.Domains
 	{
 		[MaxLength(128)]
 		public string Token { get; set; }
+
+		public DateTime? Expired { get; set; }
 	}
 }

@@ -5,13 +5,14 @@ using System.Text;
 
 namespace CSMP.Agent.Windows.Collecter
 {
-	public class MemoryUsageCollecter : IMemoryUsageCollecter
-	{
-		public string Name => "memory";
+    public class MemoryUsageCollecter : IMemoryUsageCollecter
+    {
+        public string Name => "memory";
 
-		public MemoryUsageResult Collect()
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public MemoryUsageResult GetSnapshot()
+        {
+            // TODO 
+            return new MemoryUsageResult();
+        }
+    }
 }
